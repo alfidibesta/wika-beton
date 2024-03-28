@@ -76,6 +76,8 @@
 <script src="<?php echo base_url(); ?>assets/amcharts4/core.js"></script>
 <script src="<?php echo base_url(); ?>assets/amcharts4/chart.js"></script>
 <script src="<?php echo base_url(); ?>assets/amcharts4/animated.js"></script>
+<script src="<?php echo base_url(); ?>assets/amcharts4/themes/material.js"></script>
+<script src="<?php echo base_url(); ?>assets/amcharts4/themes/kelly.js"></script>
 <script src="<?php echo base_url(); ?>assets/amcharts4/kelly.js"></script>
 
 <!-- DRAG -->
@@ -253,16 +255,33 @@
         grafik();
     }
 
+    function getMonthName(monthNumber) {
+        const monthNames = [
+            "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+            "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+        ];
+    return monthNames[monthNumber - 1]; // Adjust month number to array index
+}
+
     function grafik() {
+        var selectedYear = $("#tahun").val(); // Get the selected year from the dropdown
         $.ajax({
             url: "<?= site_url('cpanel/dashboard/data_grafik') ?>",
+            method: "POST", // Send data via POST method
             dataType: "json",
+            data: {year: selectedYear}, // Pass the selected year to the server
             success: function(data) {
+                // Process data
+                data.forEach(function(entry) {
+                    entry.bulan = getMonthName(entry.bulan);
+                });
                 barChart(data, "grafik");
             }
-        })
+        });
     }
-
+    
+    am4core.useTheme(am4themes_animated);
+    // am4core.useTheme(am4themes_material);
     function barChart(data, chartdiv) {
         var chart = am4core.create(chartdiv, am4charts.XYChart);
         chart.data = data;

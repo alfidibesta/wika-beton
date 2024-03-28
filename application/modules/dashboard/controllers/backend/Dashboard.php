@@ -21,16 +21,26 @@ class Dashboard extends Backend
       'newRFQ'  => $this->base->get('rfq_request'),
       'company' => $this->db->get('company')->result_array(),
       'data_deadline'    => $this->base->data_deadline(),
+      'data_year'    => $this->base->data_year(),
     ];
     $this->template->set_title("Dashboard", $data);
     $this->template->view("index", $data);
   }
 
+  // public function data_grafik()
+  // {
+  //   $grafik = $this->base->data_grafik();
+  //   echo $data = json_encode($grafik);
+  // }
+
   public function data_grafik()
   {
-    $grafik = $this->base->data_grafik();
-    echo $data = json_encode($grafik);
+      $year = $this->input->post('year');
+
+      $grafik = $this->base->data_grafik($year);
+      echo json_encode($grafik);
   }
+
 
   function test()
   {

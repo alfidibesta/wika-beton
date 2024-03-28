@@ -39,12 +39,24 @@ class Base_model extends CI_Model
         return $this->db->get();
     }
 
-    public function data_grafik()
+    public function data_grafik($year)
     {
-        $this->db->select('count(id) as Total, bulan');
+        $this->db->select('COUNT(id) as Total, MONTH(createdOn) as bulan');
         $this->db->from('rfq_request');
-        $this->db->group_by('MONTH(createdOn)');
-        return $this->db->get()->result();
+        $this->db->where('YEAR(createdOn)', $year); // Tambahkan kriteria tahun
+        $this->db->group_by(' MONTH(createdOn)');
+        $query = $this->db->get();
+        return $query->result();
+
+    }
+
+    public function data_year()
+    {
+        $this->db->select('year(createdOn) as year');
+        $this->db->from('rfq_request');
+        $this->db->group_by('year(createdOn)');
+        $query = $this->db->get();
+        return $query->result();
     }
 
     public function data_deadline()

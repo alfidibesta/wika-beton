@@ -84,26 +84,20 @@
           <div class="card-content">
             <div class="card-body">
               <h4 class="card-title">Grafik Pembuatan SPH Per Bulan</h4>
+              <div class="form-group">
+                <select name="tahun" id="tahun" class="form-control" onchange="grafik()">
+                    <?php
+                    $current_year = date('Y');
+                    foreach ($data_year as $data):
+                        ?>
+                        <option value="<?= $data->year ?>" <?= ($data->year == $current_year) ? 'selected' : '' ?>>
+                            <?= $data->year ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+
+              </div>
             </div>
-            <!-- <div class="table-responsive">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>Nama Perusahaan</th>
-                    <th>Nama Proyek</th>
-                    <th>Nama Owner</th>
-                    <th>Aksi</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
-                  foreach ($newRFQ as $key => $data) {
-                    # code...
-                  }
-                  ?>
-                </tbody>
-              </table>
-            </div> -->
             <div class="init-loading grafik" style="height:400px;width:100%;"></div>
 
           </div>

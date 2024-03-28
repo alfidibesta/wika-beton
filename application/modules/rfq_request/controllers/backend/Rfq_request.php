@@ -221,7 +221,8 @@ class Rfq_request extends Backend
                 'tindak_lanjut' => $row->tindak_lanjut,
                 'pic_se' => $row->pic_se,
                 'total_vol' => number_format($row->total_vol,2,",","."),
-                'lkb' => number_format($row->lkb,2,",","."),
+                // 'lkb' => number_format($row->lkb,2,",","."),
+                'lkb' => $row->lkb,
                 'p_ke' => $row->p_ke,
                 'tgl_penawaran' => $row->tgl_penawaran,
                 'diff' => $diff
