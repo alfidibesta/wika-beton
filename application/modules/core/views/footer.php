@@ -599,6 +599,21 @@
     });
 </script>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    var batchingPlantSelect = document.getElementById("suplai_batching");
+    var otherBatchingPlantInput = document.getElementById("suplai_batching_other");
+
+    batchingPlantSelect.addEventListener("change", function () {
+        if (batchingPlantSelect.value === "Other") {
+            otherBatchingPlantInput.style.display = "block";
+        } else {
+            otherBatchingPlantInput.style.display = "none";
+        }
+    });
+  });
+</script>
+
 </body>
 
 </html>

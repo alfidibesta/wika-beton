@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", function () {
     // Your code here
-    var batchingPlantSelect = document.getElementById("batchingPlantSelect");
-    var otherBatchingPlantInput = document.getElementById("otherBatchingPlantInput");
+    let batchingPlantSelect = document.getElementById("batchingPlantSelect");
+    let otherBatchingPlantInput = document.getElementById("otherBatchingPlantInput");
 
-    batchingPlantSelect.addEventListener("click", function () {
+    batchingPlantSelect.addEventListener("change", function () {
         if (batchingPlantSelect.value === "other") {
             otherBatchingPlantInput.style.display = "block";
         } else {
@@ -11,10 +11,10 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    var methodPaymentSelect = document.getElementById("methodPaymentSelect");
-    var otherMethodPaymentInput = document.getElementById("otherMethodPaymentInput");
+    let methodPaymentSelect = document.getElementById("methodPaymentSelect");
+    let otherMethodPaymentInput = document.getElementById("otherMethodPaymentInput");
 
-    methodPaymentSelect.addEventListener("click", function () {
+    methodPaymentSelect.addEventListener("change", function () {
         if (methodPaymentSelect.value === "other") {
             otherMethodPaymentInput.style.display = "block";
         } else {

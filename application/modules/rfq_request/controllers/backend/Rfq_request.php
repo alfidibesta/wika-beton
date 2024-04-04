@@ -527,6 +527,7 @@ class Rfq_request extends Backend
         $this->is_allowed('rfq_request_update');
         if ($row = $this->model->find(dec_url($id))) {
             $this->template->set_title(cclang('update') . ' ' . $this->title);
+
             $data = [
                 'action' => url("rfq_request/update_action/$id"),
                 'no_penawaran' => set_value('no_penawaran', $row->no_penawaran),
@@ -555,6 +556,8 @@ class Rfq_request extends Backend
                 'lkb' => set_value('lkb', $row->lkb),
                 'tgl_penawaran' =>  $row->tgl_penawaran == '' ? '' : date('Y-m-d', strtotime($row->tgl_penawaran)),
                 'p_ke' => set_value('p_ke', $row->p_ke),
+                'tanggal_mulai' => set_value('tanggal_mulai', $row->tanggal_mulai),
+                'tanggal_selesai' => set_value('tanggal_selesai', $row->tanggal_selesai),
             ];
             $this->template->view('update', $data);
         } else {
@@ -564,48 +567,6 @@ class Rfq_request extends Backend
 
     function update_action($id)
     {
-        // if ($this->input->is_ajax_request()) {
-        //   if (!is_allowed('rfq_request_update')) {
-        //     show_error("Access Permission", 403, '403::Access Not Permission');
-        //     exit();
-        //   }
-
-        //   $json = array('success' => false);
-        //   $this->form_validation->set_rules("no_penawaran", "* No penawaran", "trim|xss_clean");
-        //   $this->form_validation->set_rules("nama_perusahaan", "* Nama perusahaan", "trim|xss_clean");
-        //   $this->form_validation->set_rules("nama_proyek", "* Nama proyek", "trim|xss_clean");
-        //   $this->form_validation->set_rules("nama_owner", "* Nama owner", "trim|xss_clean");
-        //   $this->form_validation->set_error_delimiters('<i class="error text-danger" style="font-size:11px">', '</i>');
-
-        //   if ($this->form_validation->run()) {
-        //     $save_data['no_penawaran'] = $this->input->post('no_penawaran', true);
-        //     $save_data['status_penawaran'] = $this->input->post('status_penawaran', true);
-        //     $save_data['nama_perusahaan'] = $this->input->post('nama_perusahaan', true);
-        //     $save_data['nama_proyek'] = $this->input->post('nama_proyek', true);
-        //     $save_data['untuk_perhatian'] = $this->input->post('untuk_perhatian', true);
-        //     $save_data['email_pelanggan'] = $this->input->post('email_pelanggan', true);
-        //     $save_data['nama_owner'] = $this->input->post('nama_owner', true);
-        //     $save_data['pelanggan'] = $this->input->post('pelanggan', true);
-        //     $save_data['kebutuhan_produk'] = $this->input->post('kebutuhan_produk', true);
-
-        //     // var_dump($this->input->post(null, true));
-
-        //     $save = $this->model->change(dec_url($id), $save_data);
-
-        //     set_message("success", cclang("notif_update"));
-
-        //     $json['redirect'] = url("rfq_request");
-        //     $json['success'] = true;
-        //   } else {
-        //     foreach ($_POST as $key => $value) {
-        //       $json['alert'][$key] = form_error($key);
-        //     }
-        //   }
-
-        //   $this->response($json);
-        // }
-
-        $json = ['success' => false];
         $this->form_validation->set_rules('no_penawaran', '* No penawaran', 'trim|xss_clean');
         $this->form_validation->set_rules('nama_perusahaan', '* Nama perusahaan', 'trim|xss_clean');
         $this->form_validation->set_rules('nama_proyek', '* Nama proyek', 'trim|xss_clean');
@@ -627,6 +588,8 @@ class Rfq_request extends Backend
         $this->form_validation->set_rules('lkb', '* LKB', 'trim|xss_clean');
         $this->form_validation->set_rules('tgl_penawaran', '* Tanggal Penawaran', 'trim|xss_clean');
         $this->form_validation->set_rules('p_ke', '* P ke', 'trim|xss_clean');
+        $this->form_validation->set_rules('tanggal_mulai', '* Tanggal Mulai', 'trim|xss_clean');
+        $this->form_validation->set_rules('tanggal_selesai', '* Tanggal Selesai', 'trim|xss_clean');
         $this->form_validation->set_error_delimiters('<i class="error text-danger" style="font-size:11px">', '</i>');
 
         if ($this->form_validation->run()) {
@@ -642,7 +605,14 @@ class Rfq_request extends Backend
             $save_data['deadline'] = $this->input->post('deadline', true);
             $save_data['sbu'] = $this->input->post('sbu', true);
             $save_data['npp'] = $this->input->post('npp', true);
-            $save_data['suplai_batching'] = $this->input->post('suplai_batching', true);
+
+            $suplai_batching = $this->input->post('suplai_batching', true);
+            if ($suplai_batching == 'Other') {
+                $save_data['suplai_batching'] = $this->input->post('suplai_batching_other', true);
+            } else {
+                $save_data['suplai_batching'] = $suplai_batching;
+            }
+
             $save_data['koordinat'] = $this->input->post('koordinat', true);
             $save_data['batching_jarak'] = $this->input->post('batching_jarak', true);
             $save_data['wilayah'] = $this->input->post('wilayah', true);
@@ -656,13 +626,12 @@ class Rfq_request extends Backend
             $save_data['lkb'] = $this->input->post('lkb', true);
             $save_data['tgl_penawaran'] = $this->input->post('tgl_penawaran', true);
             $save_data['p_ke'] = $this->input->post('p_ke', true);
-
-            // var_dump($this->input->post(null, true));
+            $save_data['tanggal_mulai'] = $this->input->post('tanggal_mulai', true);
+            $save_data['tanggal_selesai'] = $this->input->post('tanggal_selesai', true);
 
             $save = $this->model->change(dec_url($id), $save_data);
 
             set_message('success', cclang('notif_update'));
-
             redirect(url('rfq_request'));
         } else {
             echo 'Error';

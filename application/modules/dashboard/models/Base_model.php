@@ -62,7 +62,7 @@ class Base_model extends CI_Model
     public function data_deadline()
     {
         // Mendapatkan tanggal saat ini
-        $today = date('Y-m-d');
+        // $today = date('Y-m-d');
 
         // Mendapatkan tanggal 7 hari yang lalu
         $seven_days_ago = date('Y-m-d', strtotime('-7 days'));
@@ -72,6 +72,7 @@ class Base_model extends CI_Model
         $this->db->select('id, deadline, no_penawaran, status_penawaran, pelanggan, nama_perusahaan, nama_proyek');
         $this->db->from('rfq_request');
         $this->db->where("deadline < '$seven_days_ahead' OR deadline > '$seven_days_ago'");
+        $this->db->order_by('deadline DESC');
         $this->db->limit(10);
         return $this->db->get()->result();
     }
