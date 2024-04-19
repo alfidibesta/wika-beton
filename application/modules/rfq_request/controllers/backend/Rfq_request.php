@@ -622,8 +622,15 @@ class Rfq_request extends Backend
             $save_data['tindak_lanjut'] = $this->input->post('tindak_lanjut', true);
             $save_data['status_gagal'] = $this->input->post('status_gagal', true);
             $save_data['pic_se'] = $this->input->post('pic_se', true);
-            $save_data['total_vol'] = $this->input->post('total_vol', true);
-            $save_data['lkb'] = $this->input->post('lkb', true);
+
+            $total_vol = $this->input->post('total_vol', true);
+            $total_vol = preg_replace('/\s+/', '', str_replace(',', '.', $total_vol));
+            $save_data['total_vol'] = $total_vol;
+
+            $lkb = $this->input->post('lkb', true);
+            $lkb = preg_replace('/\s+/', '', str_replace(',', '.', $lkb));
+            $save_data['lkb'] = $lkb;
+
             $save_data['tgl_penawaran'] = $this->input->post('tgl_penawaran', true);
             $save_data['p_ke'] = $this->input->post('p_ke', true);
             $save_data['tanggal_mulai'] = $this->input->post('tanggal_mulai', true);
