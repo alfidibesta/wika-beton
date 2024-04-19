@@ -251,9 +251,9 @@
                         <label style="width: 100%;">Total Volume
                             <?php
                             // Check if $lkb contains a comma
-                            if (strpos($lkb, ',') !== false) {
+                            if (strpos($total_vol, ',') !== false) {
                                 // If it contains a comma, replace it with a dot
-                                $lkb = str_replace(',', '.', $lkb);
+                                $total_vol = str_replace(',', '.', $total_vol);
                             }
                             ?>
                             <input type="text" class="form-control" placeholder="0.0" rows="3" name="total_vol"
