@@ -250,10 +250,10 @@
                     <div class="form-group">
                         <label style="width: 100%;">Total Volume
                             <?php
-                            // Check if $lkb contains a comma
+                            // Check if $total_vol contains a comma
                             if (strpos($total_vol, ',') !== false) {
                                 // If it contains a comma, replace it with a dot
-                                $total_vol = str_replace(',', '.', $total_vol);
+                                $total_vol = preg_replace('/\s+/', '', str_replace(',', '.', $total_vol));
                             }
                             ?>
                             <input type="text" class="form-control" placeholder="0.0" rows="3" name="total_vol"
@@ -268,7 +268,7 @@
                             // Check if $lkb contains a comma
                             if (strpos($lkb, ',') !== false) {
                                 // If it contains a comma, replace it with a dot
-                                $lkb = str_replace(',', '.', $lkb);
+                                $lkb = preg_replace('/\s+/', '', str_replace(',', '.', $lkb));
                             }
                             ?>
                             <input type="text" class="form-control" placeholder="0.0%" rows="3" name="lkb" id="lkb"
