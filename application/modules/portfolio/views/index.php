@@ -81,22 +81,53 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        var table;
-        //datatables
-        table = $('#table').DataTable({
 
-            "processing": true, //Feature control the processing indicator.
-            "serverSide": true, //Feature control DataTables' server-side processing mode.
-            "order": [], //Initial no order.
+        var columnDefs = [];
+
+        for (var target = 8; target <= 15; target++) {
+            columnDefs.push({
+                "targets": target,
+                "orderable": false,
+                "render": function(data, type, row, meta) {
+                    var columnIdx = meta.col;
+                    var stars = '';
+                    if (row[columnIdx] !== undefined && !isNaN(row[columnIdx])) {
+                        for (var i = 0; i < row[columnIdx]; i++) {
+                            stars += '<i class="ion-ios7-star"></i>';
+                        }
+                    } else {
+                        console.log(`Invalid data for column ${columnIdx}:`, row[columnIdx]);
+                    }
+                    return stars;
+                }
+            });
+        }
+
+        columnDefs.push({
+            "targets": 16,
+            "className": "text-center",
+            "orderable": false,
+            //! console.log
+            // "render": function(data, type, row, meta) {
+            //     console.log('Row data for column 16:', row);
+            //     console.log('data data for column 16:', data);
+            //     console.log('type data for column 16:', type);
+            //     console.log('meta data for column 16:', meta);
+            //     return data;
+            // }
+        });
+
+        var table = $('#table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "order": [],
             "ordering": true,
             "searching": false,
             "info": true,
             "bLengthChange": false,
-            oLanguage: {
-                sProcessing: '<i class="fa fa-spinner fa-spin fa-fw"></i> Loading...'
+            "oLanguage": {
+                "sProcessing": '<i class="fa fa-spinner fa-spin fa-fw"></i> Loading...'
             },
-
-            // Load data for the table's content from an Ajax source
             "ajax": {
                 "url": "<?= url('portfolio/json') ?>",
                 "type": "POST",
@@ -105,162 +136,16 @@
                     data.category = $("#category").val();
                     data.project_date = $("#project_date").val();
                     data.pic = $("#pic").val();
+                },
+                "dataSrc": function(json) {
+                    console.log('Server response:', json);
+                    return json.data;
                 }
             },
-
-            //Set column definition initialisation properties.
-            "columnDefs": [
-
-                {
-                    "targets": 0,
-                    "orderable": false
-                },
-
-                {
-                    "targets": 1,
-                    "orderable": false
-                },
-
-                {
-                    "targets": 2,
-                    "orderable": false
-                },
-
-                {
-                    "targets": 3,
-                    "orderable": false
-                },
-
-                {
-                    "targets": 4,
-                    "orderable": false
-                },
-
-                {
-                    "targets": 5,
-                    "orderable": false
-                },
-
-                {
-                    "targets": 6,
-                    "orderable": false
-                },
-
-                {
-                    "targets": 7,
-                    "orderable": false,
-                    "render": function(data, type, row) {
-                        var stars = '';
-                        for (var i = 0; i < row[7]; i++) {
-                            stars += '<i class="ion-ios7-star"></i>';
-                        }
-                        return stars;
-                    }
-                },
-
-                {
-                    "targets": 8,
-                    "orderable": false,
-                    "render": function(data, type, row) {
-                        var stars = '';
-                        for (var i = 0; i < row[8]; i++) {
-                            stars += '<i class="ion-ios7-star"></i>';
-                        }
-                        return stars;
-                    }
-                },
-
-                {
-                    "targets": 9,
-                    "orderable": false,
-                    "render": function(data, type, row) {
-                        var stars = '';
-                        for (var i = 0; i < row[9]; i++) {
-                            stars += '<i class="ion-ios7-star"></i>';
-                        }
-                        return stars;
-                    }
-                },
-
-                {
-                    "targets": 10,
-                    "orderable": false,
-                    "render": function(data, type, row) {
-                        var stars = '';
-                        for (var i = 0; i < row[10]; i++) {
-                            stars += '<i class="ion-ios7-star"></i>';
-                        }
-                        return stars;
-                    }
-                },
-
-                {
-                    "targets": 11,
-                    "orderable": false,
-                    "render": function(data, type, row) {
-                        var stars = '';
-                        for (var i = 0; i < row[11]; i++) {
-                            stars += '<i class="ion-ios7-star"></i>';
-                        }
-                        return stars;
-                    }
-                },
-
-                {
-                    "targets": 12,
-                    "orderable": false,
-                    "render": function(data, type, row) {
-                        var stars = '';
-                        for (var i = 0; i < row[12]; i++) {
-                            stars += '<i class="ion-ios7-star"></i>';
-                        }
-                        return stars;
-                    }
-                },
-
-                {
-                    "targets": 13,
-                    "orderable": false,
-                    "render": function(data, type, row) {
-                        var stars = '';
-                        for (var i = 0; i < row[13]; i++) {
-                            stars += '<i class="ion-ios7-star"></i>';
-                        }
-                        return stars;
-                    }
-                },
-
-                {
-                    "targets": 14,
-                    "orderable": false,
-                    "render": function(data, type, row) {
-                        var stars = '';
-                        for (var i = 0; i < row[14]; i++) {
-                            stars += '<i class="ion-ios7-star"></i>';
-                        }
-                        return stars;
-                    }
-                },
-
-                {
-                    "targets": 15,
-                    "orderable": false,
-                    "render": function(data, type, row) {
-                        var stars = '';
-                        for (var i = 0; i < row[15]; i++) {
-                            stars += '<i class="ion-ios7-star"></i>';
-                        }
-                        return stars;
-                    }
-                },
-
-                {
-                    "className": "text-center",
-                    "orderable": false,
-                    "targets": 16
-                },
-            ],
+            "columnDefs": columnDefs
         });
+
+
 
         $("#reload").click(function() {
             $("#client_name").val("");
